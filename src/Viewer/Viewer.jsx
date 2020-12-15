@@ -10,9 +10,9 @@ const Viewer = ({state, sensorsNames = []}) => {
                     <h1 className={style.title}>dashboard</h1>
                     <div className={style.data}>
                         {state.map((item, idx) => {
-                            return <div className={style.sensor}>
+                            return <div key={idx} className={style.sensor}>
                                         <h2>{sensorsNames[idx]}</h2>
-                                        <div key={idx} className="">{item}</div>
+                                        <div key={idx}>{item}</div>
                                     </div>
                         })}
                     </div>

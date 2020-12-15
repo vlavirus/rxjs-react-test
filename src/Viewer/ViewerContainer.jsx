@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Viewer} from './Viewer';
 import { Observable, zip, of } from 'rxjs';
-import { catchError, mapTo, pipe, timeout, delay } from 'rxjs/operators'
-
-const minIntervalOfRenderObject = 1000;
-const minDelay = 100;
-const maxDelay = 150;
+import { catchError, timeout } from 'rxjs/operators'
+const minDelay = 200;
+const maxDelay = 1800;
 
 function getRandomNumber() {
 	return ~~(Math.random() * 200)
@@ -54,4 +52,4 @@ const ViewerContainer = () => {
 	)
 }
 
-export { ViewerContainer };
+export { ViewerContainer, createCustomStream };
