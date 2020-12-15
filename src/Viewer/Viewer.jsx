@@ -2,13 +2,22 @@ import React from 'react';
 
 import style from './Viewer.module.css'
 
-const Viewer = ({state}) => {
+const Viewer = ({state, sensorsNames = []}) => {
     return (
         <section>
             <div className={style.wrapper}>
-                {state.map((item, index) => {
-                    return <div key={index} className={style.data}>{item}</div>
-                })}
+                <div className={style.dashboard}>
+                    <h1 className={style.title}>dashboard</h1>
+                    <div className={style.data}>
+                        {state.map((item, idx) => {
+                            return <div className={style.sensor}>
+                                        <h2>{sensorsNames[idx]}</h2>
+                                        <div key={idx} className="">{item}</div>
+                                    </div>
+                        })}
+                    </div>
+                </div>
+          
             </div>
         </section>
     )

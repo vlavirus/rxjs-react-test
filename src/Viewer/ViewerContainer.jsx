@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Viewer} from './Viewer';
 import { Observable, zip, of } from 'rxjs';
-import { catchError, mapTo, pipe, timeout } from 'rxjs/operators'
-const minIntervalOfRenderObject = 600;
+import { catchError, mapTo, pipe, timeout, delay } from 'rxjs/operators'
+
+const minIntervalOfRenderObject = 1000;
 const minDelay = 100;
-const maxDelay = 2000;
+const maxDelay = 150;
 
 function getRandomNumber() {
 	return ~~(Math.random() * 200)
@@ -14,8 +15,8 @@ function randomDelay(bottom, top) {
 	return Math.floor( Math.random() * ( 1 + top - bottom ) ) + bottom;
 }
 
-const createSensor = () => {
-	const stream$ =  new Observable(observer => {
+const createCustomStream = () => {
+	return new Observable(observer => {
 		let timeout = null;
 		(function push() {
 			timeout = setTimeout(
@@ -26,30 +27,30 @@ const createSensor = () => {
 				randomDelay(minDelay, maxDelay)
 			);
 		})();
+		
 		return () => clearTimeout(timeout);
-	})
-
-	return stream$.pipe(
-		timeout(1500),
-		catchError(() => of(undefined).pipe(mapTo('no data')))
-	)
+		}).pipe(
+			timeout(1500),
+			catchError(() => of('no data'))
+		)
 }
-
-
-const sens1$ = createSensor();
 
 const ViewerContainer = () => {
 	const [state, setState] = useState([]);
 
 	useEffect(() => {
-		const main$ = createSensor()
-		const subscribe = main$.subscribe(val => console.log(val))
-		
+		const main$ = zip(
+			createCustomStream(),
+			createCustomStream(),
+			createCustomStream(),
+			createCustomStream()
+		)
+		const subscribe = main$.subscribe(val => setState(val))
 		return () => subscribe.unsubscribe()
-	})
+	}, [state])
 
 	return (
-		<Viewer state={state}/>
+		<Viewer state={state} sensorsNames={['A', 'B', 'C', 'D']}/>
 	)
 }
 
