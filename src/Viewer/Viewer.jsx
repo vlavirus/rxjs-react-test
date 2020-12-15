@@ -6,10 +6,12 @@ const Viewer = ({state}) => {
     return (
         <section>
             <div className={style.wrapper}>
-                <h1>{state}</h1>
+                {state.map((item, index) => {
+                    return <div key={index} className={style.data}>{item}</div>
+                })}
             </div>
         </section>
     )
 }
 
-export default Viewer;
+export { Viewer };

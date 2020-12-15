@@ -1,10 +1,10 @@
 import './App.css';
-import ViewerContainer from './Viewer/ViewerContainer';
+import {ViewerContainer} from './Viewer/ViewerContainer'
 
 function App() {
-  return (
+  return <>
     <ViewerContainer></ViewerContainer>
-  )
+  </>
 }
 
 export default App;
