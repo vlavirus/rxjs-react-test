@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {Viewer} from './Viewer';
 import { Observable, zip, of } from 'rxjs';
-import { catchError, timeout } from 'rxjs/operators'
-const minDelay = 200;
-const maxDelay = 1800;
+import { catchError, timeout } from 'rxjs/operators';
+
+const MIN_DELAY = 200;
+const MAX_DELAY = 1800;
 
 function getRandomNumber() {
 	return ~~(Math.random() * 200)
@@ -22,7 +23,7 @@ const createCustomStream = () => {
 					observer.next(getRandomNumber());
 					push();
 				},
-				randomDelay(minDelay, maxDelay)
+				randomDelay(MIN_DELAY, MAX_DELAY)
 			);
 		})();
 		
@@ -44,6 +45,7 @@ const ViewerContainer = () => {
 			createCustomStream()
 		)
 		const subscribe = main$.subscribe(val => setState(val))
+		
 		return () => subscribe.unsubscribe()
 	}, [state])
 
@@ -52,4 +54,4 @@ const ViewerContainer = () => {
 	)
 }
 
-export { ViewerContainer, createCustomStream };
+export { ViewerContainer };
